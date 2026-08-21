@@ -1,0 +1,26 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-brand" routerLink="/">
+      <span>📦</span>
+      <span class="logo-text">SmartCourier</span>
+    </div>
+    <div class="navbar-links">
+      <a href="#services">Services</a>
+      <a href="#how-it-works">How it Works</a>
+      <a href="#track">Track</a>
+    </div>
+    @if (!isLoggedIn()) {
+      <div class="navbar-actions">
+        <a routerLink="/auth/login" class="btn-ghost-nav">Login</a>
+        <a routerLink="/auth/signup" class="btn-primary-nav">Sign Up</a>
+      </div>
+    }
+    @if (isLoggedIn()) {
+      <div class="navbar-actions">
+        <span class="welcome-text">👋 {{ fullName() }}</span>
+        <button (click)="goToDashboard()" class="btn-ghost-nav">Dashboard</button>
+        <button (click)="logout()" class="btn-logout-nav">Logout</button>
+      </div>
+    }
+  </div>
+</nav>

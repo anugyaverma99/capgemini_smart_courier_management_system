@@ -1,0 +1,76 @@
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="brand">📦 SmartCourier</div>
+    <nav>
+      <a class="active" routerLink="/admin/dashboard">Dashboard</a>
+      <a routerLink="/admin/deliveries">Deliveries</a>
+      <a routerLink="/admin/exceptions">Exceptions</a>
+      <a routerLink="/admin/hubs">Hubs</a>
+      <a routerLink="/admin/reports">Reports</a>
+    </nav>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </aside>
+
+  <main class="admin-main">
+    <div class="page-header">
+      <div>
+        <h1>Admin Dashboard</h1>
+        <p>Monitor live courier operations and recent delivery movement.</p>
+      </div>
+    </div>
+
+    @if (errorMessage()) {
+      <div class="error-box">{{ errorMessage() }}</div>
+    }
+
+    @if (loading()) {
+      <div class="loading-box">Loading dashboard...</div>
+    }
+
+    @if (dashboard(); as d) {
+      <section class="stats-grid">
+        <article class="stat-card"><span>Total</span><strong>{{ d.totalDeliveries }}</strong></article>
+        <article class="stat-card"><span>In Transit</span><strong>{{ d.inTransit }}</strong></article>
+        <article class="stat-card"><span>Delivered</span><strong>{{ d.deliveredToday }}</strong></article>
+        <article class="stat-card"><span>Exceptions</span><strong>{{ d.exceptions }}</strong></article>
+        <article class="stat-card"><span>Active Hubs</span><strong>{{ d.activeHubs }}</strong></article>
+        <article class="stat-card"><span>Out For Delivery</span><strong>{{ d.outForDelivery }}</strong></article>
+      </section>
+    }
+
+    <section class="table-card">
+      <div class="section-title">
+        <h2>Recent Deliveries</h2>
+        <a routerLink="/admin/deliveries">View all</a>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Tracking No.</th>
+            <th>Customer</th>
+            <th>Route</th>
+            <th>Status</th>
+            <th>Last Updated</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (delivery of deliveries(); track delivery.deliveryId) {
+            <tr>
+              <td class="tracking">{{ delivery.trackingNumber }}</td>
+              <td>{{ delivery.customerName }}</td>
+              <td>{{ delivery.senderCity }} → {{ delivery.receiverCity }}</td>
+              <td><span class="status-badge status-{{ delivery.currentStatus }}">{{ delivery.currentStatus }}</span></td>
+              <td>{{ delivery.lastUpdated | date:'dd MMM yyyy, hh:mm a' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+
+    <section class="quick-links">
+      <a routerLink="/admin/exceptions">⚠️ Exceptions</a>
+      <a routerLink="/admin/hubs">🏢 Hubs</a>
+      <a routerLink="/admin/reports">📊 Reports</a>
+    </section>
+  </main>
+</div>

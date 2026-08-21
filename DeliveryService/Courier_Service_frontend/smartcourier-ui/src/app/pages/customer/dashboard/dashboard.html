@@ -1,0 +1,98 @@
+<div class="dashboard">
+  <div class="sidebar">
+    <div class="sidebar-logo"><span>📦</span><h2>SmartCourier</h2></div>
+    <nav class="sidebar-nav">
+      <a class="nav-item active" routerLink="/customer/dashboard">🏠 Dashboard</a>
+      <a class="nav-item" routerLink="/customer/deliveries">📋 View Deliveries</a>
+      <a class="nav-item" routerLink="/customer/create-delivery">➕ New Delivery</a>
+      <a class="nav-item" routerLink="/track">🔍 Track Delivery</a>
+    </nav>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </div>
+
+  <div class="main-content">
+    <div class="header">
+      <div>
+        <h1>Welcome back, {{ fullName() }}!</h1>
+        <p>Book, view and track your courier deliveries.</p>
+      </div>
+    </div>
+
+    <section class="customer-actions">
+      <article class="action-card">
+        <div class="action-icon">🔍</div>
+        <h2>Track Your Delivery</h2>
+        <p>Use a tracking number to see current shipment status and timeline.</p>
+        <button class="btn-new-delivery" routerLink="/track">Track Delivery</button>
+      </article>
+      <article class="action-card accent-card">
+        <div class="action-icon">➕</div>
+        <h2>New Delivery</h2>
+        <p>Create a courier request with sender, receiver and package details.</p>
+        <button class="btn-new-delivery" routerLink="/customer/create-delivery">Create Delivery</button>
+      </article>
+      <article class="action-card">
+        <div class="action-icon">📋</div>
+        <h2>View Your Deliveries</h2>
+        <p>See all deliveries saved in the database and open full details.</p>
+        <a class="btn-link" routerLink="/customer/deliveries">View Deliveries</a>
+      </article>
+    </section>
+
+    @if (errorMessage()) {
+      <div class="error-box">{{ errorMessage() }}</div>
+    }
+
+    <div class="table-card" id="my-deliveries">
+      <div class="table-title">
+        <div>
+          <h2>Recent Deliveries</h2>
+          <p>Latest {{ deliveries().length > 4 ? 4 : deliveries().length }} of {{ deliveries().length }} deliveries</p>
+        </div>
+        <a class="btn-link" routerLink="/customer/deliveries">View All Deliveries</a>
+      </div>
+
+      @if (loading() && deliveries().length === 0) {
+        <div class="loading-box"><p>Loading your deliveries...</p></div>
+      } @else if (deliveries().length === 0) {
+        <div class="empty-box">
+          <span>📭</span>
+          <h3>No deliveries found</h3>
+          <p>Create your first delivery to see it here.</p>
+        </div>
+      } @else {
+        <table class="deliveries-table">
+          <thead>
+            <tr>
+              <th>Tracking No.</th>
+              <th>From</th>
+              <th>To</th>
+              <th>Service</th>
+              <th>Status</th>
+              <th>Charge</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (delivery of deliveries().slice(0, 4); track delivery.id) {
+              <tr>
+                <td class="tracking-no">{{ delivery.trackingNumber }}</td>
+                <td>{{ delivery.senderAddress.city }}</td>
+                <td>{{ delivery.receiverAddress.city }}</td>
+                <td><span class="service-tag">{{ delivery.packageDetails.serviceType }}</span></td>
+                <td><span class="status-badge status-{{ delivery.status }}">{{ delivery.status }}</span></td>
+                <td>₹{{ delivery.courierCharge }}</td>
+                <td>{{ delivery.createdAt | date:'dd MMM yyyy' }}</td>
+                <td>
+                  <button class="btn-view" (click)="trackDelivery(delivery.trackingNumber)">Track</button>
+                  <button class="btn-view" [routerLink]="['/customer/delivery', delivery.id]">Details</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+  </div>
+</div>

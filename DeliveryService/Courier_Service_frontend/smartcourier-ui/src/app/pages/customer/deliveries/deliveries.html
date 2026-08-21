@@ -1,0 +1,93 @@
+<div class="deliveries-page">
+  <aside class="sidebar">
+    <div class="sidebar-logo"><span>📦</span><h2>SmartCourier</h2></div>
+    <nav class="sidebar-nav">
+      <a class="nav-item" routerLink="/customer/dashboard">🏠 Dashboard</a>
+      <a class="nav-item active" routerLink="/customer/deliveries">📋 View Deliveries</a>
+      <a class="nav-item" routerLink="/customer/create-delivery">➕ New Delivery</a>
+      <a class="nav-item" routerLink="/track">🔍 Track Delivery</a>
+    </nav>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </aside>
+
+  <main class="main-content">
+    <div class="header">
+      <div>
+        <h1>All My Deliveries</h1>
+        <p>Every delivery saved for your account from the database.</p>
+      </div>
+      <button class="primary-btn" routerLink="/customer/create-delivery">+ New Delivery</button>
+    </div>
+
+    @if (errorMessage()) {
+      <div class="error-box">{{ errorMessage() }}</div>
+    }
+
+    <section class="table-card">
+      <div class="table-title">
+        <div>
+          <h2>Deliveries</h2>
+          <p>{{ filteredDeliveries().length }} shown / {{ deliveries().length }} total</p>
+        </div>
+        <div class="filters">
+          @for (status of statuses; track status) {
+            <button [class.active]="selectedStatus() === status" (click)="selectedStatus.set(status)">{{ status }}</button>
+          }
+        </div>
+      </div>
+
+      @if (loading()) {
+        <div class="loading-box">Loading your deliveries...</div>
+      } @else if (filteredDeliveries().length === 0) {
+        <div class="empty-box">
+          <span>📭</span>
+          <h3>No deliveries found</h3>
+          <p>Create a delivery or choose another filter.</p>
+        </div>
+      } @else {
+        <table class="deliveries-table">
+          <thead>
+            <tr>
+              <th>Tracking No.</th>
+              <th>Sender</th>
+              <th>Receiver</th>
+              <th>Route</th>
+              <th>Package</th>
+              <th>Status</th>
+              <th>Charge</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (delivery of filteredDeliveries(); track delivery.id) {
+              <tr>
+                <td class="tracking-no">{{ delivery.trackingNumber }}</td>
+                <td>
+                  <strong>{{ delivery.senderAddress.name }}</strong>
+                  <small>{{ delivery.senderAddress.phone }}</small>
+                </td>
+                <td>
+                  <strong>{{ delivery.receiverAddress.name }}</strong>
+                  <small>{{ delivery.receiverAddress.phone }}</small>
+                </td>
+                <td>{{ delivery.senderAddress.city }} → {{ delivery.receiverAddress.city }}</td>
+                <td>
+                  <strong>{{ delivery.packageDetails.description }}</strong>
+                  <small>{{ delivery.packageDetails.serviceType }}</small>
+                </td>
+                <td><span class="status-badge status-{{ delivery.status }}">{{ delivery.status }}</span></td>
+                <td>₹{{ delivery.courierCharge }}</td>
+                <td>{{ delivery.createdAt | date:'dd MMM yyyy' }}</td>
+                <td>
+                  <button class="action-btn" (click)="trackDelivery(delivery.trackingNumber)">Track</button>
+                  <button class="action-btn ghost" [routerLink]="['/customer/delivery', delivery.id]">Details</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </section>
+  </main>
+</div>

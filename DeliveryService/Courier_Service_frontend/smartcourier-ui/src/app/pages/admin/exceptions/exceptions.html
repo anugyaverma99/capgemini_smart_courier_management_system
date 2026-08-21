@@ -1,0 +1,112 @@
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="brand">
+      <svg width="24" height="24" viewBox="0 0 48 48" fill="none">
+        <rect width="48" height="48" rx="13" fill="#0d9488"/>
+        <path d="M24 8C19 8 15 12 15 17C15 23 24 36 24 36C24 36 33 23 33 17C33 12 29 8 24 8Z" fill="white"/>
+        <circle cx="24" cy="17" r="4" fill="#0d9488"/>
+      </svg>
+      FastDrop Admin
+    </div>
+    <nav>
+      <a routerLink="/admin/dashboard">🏠 Dashboard</a>
+      <a routerLink="/admin/deliveries">🚚 Deliveries</a>
+      <a class="active" routerLink="/admin/exceptions">
+        ⚠️ Exceptions
+        @if (openCount() > 0) {
+          <span class="badge-count">{{ openCount() }}</span>
+        }
+      </a>
+      <a routerLink="/admin/hubs">🏢 Hubs</a>
+      <a routerLink="/admin/reports">📊 Reports</a>
+    </nav>
+  </aside>
+
+  <main class="admin-main">
+    <div class="page-header">
+      <div>
+        <h1>⚠️ Exceptions</h1>
+        <p>Manage and resolve delivery exceptions raised by the system or manually.</p>
+      </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+      <button [class.active]="filter() === 'ALL'" (click)="filter.set('ALL')">
+        All <span class="tab-count">{{ exceptions().length }}</span>
+      </button>
+      <button [class.active]="filter() === 'OPEN'" (click)="filter.set('OPEN')">
+        🔴 Open <span class="tab-count">{{ openCount() }}</span>
+      </button>
+      <button [class.active]="filter() === 'RESOLVED'" (click)="filter.set('RESOLVED')">
+        🟢 Resolved <span class="tab-count">{{ resolvedCount() }}</span>
+      </button>
+    </div>
+
+    @if (successMessage()) {
+      <div class="success-box">✅ {{ successMessage() }}</div>
+    }
+    @if (errorMessage()) {
+      <div class="error-box">❌ {{ errorMessage() }}</div>
+    }
+
+    <section class="table-card">
+      @if (loading()) {
+        <div class="loading-box">Loading exceptions...</div>
+      } @else if (filteredExceptions().length === 0) {
+        <div class="empty-box">
+          <span>✅</span>
+          <p>No {{ filter() === 'ALL' ? '' : filter().toLowerCase() }} exceptions found.</p>
+        </div>
+      } @else {
+        <table>
+          <thead>
+            <tr>
+              <th>Tracking No.</th>
+              <th>Delivery ID</th>
+              <th>Exception Type</th>
+              <th>Reason / Description</th>
+              <th>Status</th>
+              <th>Raised At</th>
+              <th>Resolved By</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of filteredExceptions(); track item.id) {
+              <tr [class.row-open]="item.resolutionStatus !== 'RESOLVED'"
+                  [class.row-resolved]="item.resolutionStatus === 'RESOLVED'">
+                <td class="tracking">{{ item.trackingNumber }}</td>
+                <td>{{ item.deliveryId }}</td>
+                <td>
+                  <span class="type-badge" [ngClass]="getTypeBadgeClass(item.exceptionStatus)">
+                    {{ item.exceptionStatus }}
+                  </span>
+                </td>
+                <td class="reason-text">{{ item.reason }}</td>
+                <td>
+                  <span class="exception-badge"
+                        [class.resolved]="item.resolutionStatus === 'RESOLVED'"
+                        [class.open]="item.resolutionStatus !== 'RESOLVED'">
+                    {{ item.resolutionStatus }}
+                  </span>
+                </td>
+                <td>{{ item.raisedAt | date:'dd MMM yyyy, hh:mm a' }}</td>
+                <td>{{ item.resolvedBy || '—' }}</td>
+                <td>
+                  @if (item.resolutionStatus !== 'RESOLVED') {
+                    <button class="resolve-btn" (click)="resolve(item)">
+                      ✓ Resolve
+                    </button>
+                  } @else {
+                    <span class="resolved-text">✓ Done</span>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </section>
+  </main>
+</div>

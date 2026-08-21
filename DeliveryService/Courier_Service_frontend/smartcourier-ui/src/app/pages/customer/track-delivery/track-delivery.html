@@ -1,0 +1,71 @@
+<main class="track-page">
+  <section class="track-hero">
+    <a class="home-link" routerLink="/">SmartCourier</a>
+    <h1>Track Delivery</h1>
+    <p>Enter your tracking number to see the shipment route, current status and timeline.</p>
+
+    <div class="search-card">
+      <input class="track-input" [(ngModel)]="trackingNumber" placeholder="Enter tracking number" (keyup.enter)="track()" />
+      <button class="track-btn" (click)="track()" [disabled]="loading">{{ loading ? 'Tracking...' : 'Track' }}</button>
+      @if (delivery) {
+        <button class="clear-btn" (click)="clear()">Clear</button>
+      }
+    </div>
+
+    @if (errorMessage) {
+      <div class="error-box">{{ errorMessage }}</div>
+    }
+  </section>
+
+  @if (delivery) {
+    <section class="delivery-summary">
+      <div>
+        <p class="label">Tracking Number</p>
+        <h2>{{ delivery.trackingNumber }}</h2>
+      </div>
+      <span class="status-badge status-{{ delivery.status }}">{{ delivery.status }}</span>
+      <div class="route">{{ delivery.senderAddress.city }} → {{ delivery.receiverAddress.city }}</div>
+    </section>
+
+    <section class="info-grid">
+      <article>
+        <span>Sender</span>
+        <strong>{{ delivery.senderAddress.name }}</strong>
+        <p>{{ delivery.senderAddress.city }}, {{ delivery.senderAddress.state }}</p>
+      </article>
+      <article>
+        <span>Receiver</span>
+        <strong>{{ delivery.receiverAddress.name }}</strong>
+        <p>{{ delivery.receiverAddress.city }}, {{ delivery.receiverAddress.state }}</p>
+      </article>
+      <article>
+        <span>Service</span>
+        <strong>{{ delivery.packageDetails.serviceType }}</strong>
+        <p>₹{{ delivery.courierCharge }}</p>
+      </article>
+    </section>
+
+    <section class="timeline-card">
+      <h2>Tracking Timeline</h2>
+      @if (trackingEvents.length === 0) {
+        <div class="empty-state">No tracking events yet.</div>
+      } @else {
+        <div class="timeline">
+          @for (event of trackingEvents; track event.id) {
+            <article class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <div class="timeline-top">
+                  <span class="status-badge status-{{ event.status }}">{{ event.status }}</span>
+                  <time>{{ event.eventTime || event.createdAt | date:'dd MMM yyyy, hh:mm a' }}</time>
+                </div>
+                <p class="location">📍 {{ event.location }}</p>
+                <p>{{ event.description || event.remarks || 'Status updated' }}</p>
+              </div>
+            </article>
+          }
+        </div>
+      }
+    </section>
+  }
+</main>

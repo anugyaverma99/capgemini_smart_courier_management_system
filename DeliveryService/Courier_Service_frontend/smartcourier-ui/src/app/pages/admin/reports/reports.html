@@ -1,0 +1,84 @@
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="brand">📦 SmartCourier</div>
+    <nav>
+      <a routerLink="/admin/dashboard">Dashboard</a>
+      <a routerLink="/admin/deliveries">Deliveries</a>
+      <a routerLink="/admin/exceptions">Exceptions</a>
+      <a routerLink="/admin/hubs">Hubs</a>
+      <a class="active" routerLink="/admin/reports">Reports</a>
+    </nav>
+  </aside>
+
+  <main class="admin-main">
+    <div class="page-header">
+      <h1>Reports</h1>
+      <p>Generate operational, financial, and delivery reports.</p>
+    </div>
+
+    @if (successMessage()) { <div class="success-box">{{ successMessage() }}</div> }
+    @if (errorMessage()) { <div class="error-box">{{ errorMessage() }}</div> }
+
+    <section class="form-card">
+      <h2>Generate Report</h2>
+      <form class="report-form" (ngSubmit)="generate()">
+        <div class="form-group">
+          <label>From Date</label>
+          <input class="form-input" type="date" [ngModel]="fromDate()" (ngModelChange)="updateFromDate($event)" name="fromDate" />
+        </div>
+        <div class="form-group">
+          <label>To Date</label>
+          <input class="form-input" type="date" [ngModel]="toDate()" (ngModelChange)="updateToDate($event)" name="toDate" />
+        </div>
+        <div class="form-group">
+          <label>Report Type</label>
+          <select class="form-input" [ngModel]="reportType()" (ngModelChange)="updateReportType($event)" name="reportType">
+            <option value="DAILY">Daily</option>
+            <option value="WEEKLY">Weekly</option>
+            <option value="MONTHLY">Monthly</option>
+          </select>
+        </div>
+        <button class="primary-btn" type="submit">Generate</button>
+      </form>
+    </section>
+
+    <section class="table-card">
+      @if (loading()) {
+        <div class="loading-box">Loading reports...</div>
+      } @else {
+        <table>
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>From</th>
+              <th>To</th>
+              <th>Total</th>
+              <th>Delivered</th>
+              <th>Failed</th>
+              <th>Delayed</th>
+              <th>Returned</th>
+              <th>Events</th>
+              <th>Generated At</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (report of reports(); track report.id) {
+              <tr>
+                <td>{{ report.reportType }}</td>
+                <td>{{ report.fromDate | date:'dd MMM yyyy' }}</td>
+                <td>{{ report.toDate | date:'dd MMM yyyy' }}</td>
+                <td>{{ report.totalDeliveries }}</td>
+                <td>{{ report.deliveredCount }}</td>
+                <td>{{ report.failedCount }}</td>
+                <td>{{ report.delayedCount }}</td>
+                <td>{{ report.returnedCount }}</td>
+                <td>{{ report.totalTrackingEvents }}</td>
+                <td>{{ report.generatedAt | date:'dd MMM yyyy, hh:mm a' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </section>
+  </main>
+</div>

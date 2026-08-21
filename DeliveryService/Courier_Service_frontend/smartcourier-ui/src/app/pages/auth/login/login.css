@@ -1,0 +1,74 @@
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: radial-gradient(circle at top, var(--primary-light), var(--bg) 52%);
+  font-family: Arial, sans-serif;
+}
+
+.auth-card {
+  width: min(440px, 100%);
+  background: var(--white);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 34px;
+  box-shadow: 0 18px 45px rgba(15,118,110,.14);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.brand span {
+  font-size: 34px;
+}
+
+.brand h1 {
+  font-size: 24px;
+  color: var(--text-primary);
+}
+
+.auth-card h2 {
+  font-size: 30px;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.auth-card p {
+  color: var(--text-secondary);
+}
+
+.auth-form {
+  display: grid;
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.submit-btn {
+  border: 0;
+  border-radius: 8px;
+  padding: 12px 20px;
+  background: var(--primary);
+  color: var(--white);
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.submit-btn:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+}
+
+.switch-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.switch-link a {
+  color: var(--primary);
+  font-weight: 800;
+}

@@ -1,0 +1,82 @@
+/* You can add global styles to this file, and also import other style files */
+
+:root {
+  --bg: #f0fdfa;
+  --primary: #0d9488;
+  --primary-dark: #0f766e;
+  --primary-light: #ccfbf1;
+  --accent: #f97316;
+  --accent-dark: #ea6c0a;
+  --text-primary: #134e4a;
+  --text-secondary: #64748b;
+  --white: #ffffff;
+  --card-border: #ccfbf1;
+  --error: #dc2626;
+  --error-bg: #fef2f2;
+  --success: #16a34a;
+  --success-bg: #f0fdf4;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+a { text-decoration: none; color: inherit; }
+button { font-family: 'Inter', sans-serif; cursor: pointer; }
+input, select, textarea { font-family: 'Inter', sans-serif; }
+
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+
+.form-group label { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+
+.form-input {
+  padding: 12px 16px;
+  border: 2px solid var(--card-border);
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+  color: var(--text-primary);
+  background: white;
+}
+
+.form-input:focus { border-color: var(--primary); }
+
+.error-box {
+  background: var(--error-bg);
+  border: 1px solid #fecaca;
+  color: var(--error);
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.success-box {
+  background: var(--success-bg);
+  border: 1px solid #bbf7d0;
+  color: var(--success);
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.status-DRAFT { background: #f1f5f9; color: #64748b; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.status-BOOKED { background: #f0fdfa; color: #0d9488; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.status-PICKED_UP { background: #f0fdf4; color: #16a34a; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.status-IN_TRANSIT { background: #fff7ed; color: #ea580c; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.status-OUT_FOR_DELIVERY { background: #fefce8; color: #ca8a04; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.status-DELIVERED { background: #f0fdf4; color: #15803d; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.status-DELAYED { background: #fef2f2; color: #dc2626; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.status-FAILED { background: #fef2f2; color: #991b1b; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.status-RETURNED { background: #fdf4ff; color: #9333ea; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }

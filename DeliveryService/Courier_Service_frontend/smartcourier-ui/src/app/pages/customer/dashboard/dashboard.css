@@ -1,0 +1,263 @@
+.dashboard {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: Arial, sans-serif;
+}
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 240px;
+  height: 100vh;
+  background: #134e4a;
+  color: var(--white);
+  padding: 24px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255,255,255,.16);
+}
+
+.sidebar-logo span {
+  font-size: 30px;
+}
+
+.sidebar-logo h2 {
+  font-size: 20px;
+}
+
+.sidebar-nav {
+  display: grid;
+  gap: 8px;
+}
+
+.nav-item {
+  color: #99f6e4;
+  padding: 11px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.nav-item:hover,
+.nav-item.active {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.logout-btn {
+  margin-top: auto;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--white);
+  padding: 10px 20px;
+  font-weight: 800;
+}
+
+.main-content {
+  margin-left: 240px;
+  min-height: 100vh;
+  padding: 30px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  font-size: 32px;
+  margin-bottom: 6px;
+}
+
+.header p {
+  color: var(--text-secondary);
+}
+
+.btn-new-delivery,
+.btn-view {
+  border: 0;
+  border-radius: 8px;
+  background: var(--primary);
+  color: var(--white);
+  padding: 10px 20px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.customer-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.action-card {
+  background: var(--white);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 10px 26px rgba(15,118,110,.08);
+}
+
+.accent-card {
+  border-color: rgba(249, 115, 22, .35);
+}
+
+.action-icon {
+  font-size: 38px;
+  margin-bottom: 10px;
+}
+
+.action-card h2 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.action-card p,
+.table-title p {
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.btn-link {
+  display: inline-flex;
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+  color: var(--primary);
+  padding: 10px 20px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.table-card {
+  background: var(--white);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 22px;
+  overflow: auto;
+}
+
+.table-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filters button {
+  border: 1px solid var(--primary);
+  background: transparent;
+  color: var(--primary);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 800;
+}
+
+.filters button.active {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.deliveries-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 860px;
+}
+
+.deliveries-table th,
+.deliveries-table td {
+  text-align: left;
+  padding: 13px 12px;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.deliveries-table th {
+  color: var(--text-secondary);
+  font-size: 13px;
+  background: #f8fffd;
+}
+
+.deliveries-table tr:hover {
+  background: #f0fdfa;
+}
+
+.tracking-no {
+  color: var(--primary-dark);
+  font-weight: 800;
+}
+
+.service-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: var(--primary-light);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.btn-view {
+  padding: 8px 12px;
+  margin-right: 6px;
+  font-size: 13px;
+}
+
+.loading-box,
+.empty-box {
+  text-align: center;
+  padding: 42px 20px;
+  color: var(--text-secondary);
+}
+
+.empty-box span {
+  display: block;
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+.error-box {
+  margin-bottom: 18px;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 20px;
+  }
+
+  .customer-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .header,
+  .table-title {
+    flex-direction: column;
+  }
+}

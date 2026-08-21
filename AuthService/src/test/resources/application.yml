@@ -1,0 +1,12 @@
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
+  instance:
+    prefer-ip-address: false
+
+spring:
+  cloud:
+    discovery:
+      enabled: false

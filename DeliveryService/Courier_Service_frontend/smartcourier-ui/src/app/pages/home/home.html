@@ -1,0 +1,89 @@
+<app-navbar></app-navbar>
+
+<main class="home-page">
+  <section class="hero">
+    <div class="hero-content">
+      <p class="eyebrow">Fast, transparent courier management</p>
+      <h1>SmartCourier</h1>
+      <p class="hero-copy">Book pickups, monitor delivery progress, and track every shipment with a clean customer and admin experience.</p>
+
+      <div class="tracking-box">
+        <input class="tracking-input" [(ngModel)]="trackingNumber" placeholder="Enter tracking number" />
+        <a class="btn btn-primary" [routerLink]="trackingNumber ? ['/track', trackingNumber] : ['/track']">Track</a>
+      </div>
+
+      <div class="hero-actions">
+        <a class="btn btn-accent" routerLink="/customer/create-delivery">Send Package</a>
+        <a class="btn btn-ghost" routerLink="/customer/deliveries">View Deliveries</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="services">
+    <div class="section-heading">
+      <p>Services</p>
+      <h2>Choose the right delivery speed</h2>
+    </div>
+    <div class="card-grid">
+      <article class="service-card">
+        <span>🏠</span>
+        <h3>Domestic</h3>
+        <p>Reliable city-to-city delivery for everyday parcels and documents.</p>
+      </article>
+      <article class="service-card">
+        <span>⚡</span>
+        <h3>Express</h3>
+        <p>Priority handling for urgent shipments that need faster movement.</p>
+      </article>
+      <article class="service-card">
+        <span>🌍</span>
+        <h3>International</h3>
+        <p>Manage cross-border courier requests with clear status visibility.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="how-it-works">
+    <div class="section-heading">
+      <p>How It Works</p>
+      <h2>Three simple steps</h2>
+    </div>
+    <div class="steps">
+      <article>
+        <strong>1</strong>
+        <h3>Create Delivery</h3>
+        <p>Enter sender, receiver, package, and pickup details.</p>
+      </article>
+      <article>
+        <strong>2</strong>
+        <h3>Admin Updates</h3>
+        <p>Operations team updates shipment status and tracking events.</p>
+      </article>
+      <article>
+        <strong>3</strong>
+        <h3>Track Anytime</h3>
+        <p>Customers can check live progress using the tracking number.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="stats-bar">
+    <div><strong>24/7</strong><span>Tracking</span></div>
+    <div><strong>3</strong><span>Service Types</span></div>
+    <div><strong>100%</strong><span>Digital Records</span></div>
+    <div><strong>Live</strong><span>Admin Monitoring</span></div>
+  </section>
+
+  <section class="track-section">
+    <div>
+      <h2>Already shipped?</h2>
+      <p>Use your tracking number to view the current status and delivery timeline.</p>
+    </div>
+    <div class="tracking-box compact">
+      <input class="tracking-input" [(ngModel)]="trackingNumber" placeholder="Tracking number" />
+      <a class="btn btn-primary" [routerLink]="trackingNumber ? ['/track', trackingNumber] : ['/track']">Track Package</a>
+    </div>
+  </section>
+</main>
+
+<app-footer></app-footer>

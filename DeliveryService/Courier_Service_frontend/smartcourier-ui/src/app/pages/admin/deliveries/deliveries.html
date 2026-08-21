@@ -1,0 +1,66 @@
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="brand">📦 SmartCourier</div>
+    <nav>
+      <a routerLink="/admin/dashboard">Dashboard</a>
+      <a class="active" routerLink="/admin/deliveries">Deliveries</a>
+      <a routerLink="/admin/exceptions">Exceptions</a>
+      <a routerLink="/admin/hubs">Hubs</a>
+      <a routerLink="/admin/reports">Reports</a>
+    </nav>
+  </aside>
+
+  <main class="admin-main">
+    <div class="page-header">
+      <h1>Deliveries</h1>
+      <p>Filter deliveries and update their current status.</p>
+    </div>
+
+    @if (successMessage) { <div class="success-box">{{ successMessage }}</div> }
+    @if (errorMessage) { <div class="error-box">{{ errorMessage }}</div> }
+
+    <div class="filters">
+      @for (status of statuses; track status) {
+        <button [class.active]="filter === status" (click)="filter = status">{{ status }}</button>
+      }
+    </div>
+
+    <section class="table-card">
+      @if (loading) {
+        <div class="loading-box">Loading deliveries...</div>
+      } @else {
+        <table>
+          <thead>
+            <tr>
+              <th>Tracking No.</th>
+              <th>Customer</th>
+              <th>Route</th>
+              <th>Status</th>
+              <th>Update Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (delivery of filteredDeliveries; track delivery.deliveryId) {
+              <tr>
+                <td class="tracking">{{ delivery.trackingNumber }}</td>
+                <td>{{ delivery.customerName }}</td>
+                <td>{{ delivery.senderCity }} → {{ delivery.receiverCity }}</td>
+                <td><span class="status-badge status-{{ delivery.currentStatus }}">{{ delivery.currentStatus }}</span></td>
+                <td>
+                  <select class="form-input" [(ngModel)]="selectedStatus[delivery.deliveryId]">
+                    <option [value]="delivery.currentStatus">{{ delivery.currentStatus }}</option>
+                    @for (status of getAllowedStatuses(delivery.currentStatus); track status) {
+                      <option [value]="status">{{ status }}</option>
+                    }
+                  </select>
+                </td>
+                <td><button class="primary-btn" (click)="updateStatus(delivery)">Update</button></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </section>
+  </main>
+</div>

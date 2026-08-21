@@ -1,0 +1,144 @@
+<div class="detail-page">
+  <aside class="sidebar">
+    <div class="sidebar-logo"><span>📦</span><h2>SmartCourier</h2></div>
+    <nav class="sidebar-nav">
+      <a class="nav-item" routerLink="/customer/dashboard">🏠 Dashboard</a>
+      <a class="nav-item" routerLink="/customer/create-delivery">➕ New Delivery</a>
+      <a class="nav-item" routerLink="/track">🔍 Track Package</a>
+    </nav>
+    <button class="back-btn" (click)="goBack()">Back</button>
+  </aside>
+
+  <main class="main-content">
+    @if (loading() && !delivery()) {
+      <div class="loading-box">Loading delivery details...</div>
+    }
+
+    @if (errorMessage()) {
+      <div class="error-box">{{ errorMessage() }}</div>
+    }
+
+    @if (delivery(); as d) {
+      <section class="detail-header">
+        <div>
+          <p class="label">Tracking Number</p>
+          <h1>{{ d.trackingNumber }}</h1>
+        </div>
+        <span class="status-badge status-{{ d.status }}">{{ d.status }}</span>
+      </section>
+
+      <section class="summary-grid">
+        <article class="summary-card">
+          <span>Route</span>
+          <strong>{{ d.senderAddress.city }} → {{ d.receiverAddress.city }}</strong>
+        </article>
+        <article class="summary-card">
+          <span>Service</span>
+          <strong>{{ d.packageDetails.serviceType }}</strong>
+        </article>
+        <article class="summary-card">
+          <span>Charge</span>
+          <strong>₹{{ d.courierCharge }}</strong>
+        </article>
+        <article class="summary-card">
+          <span>Created</span>
+          <strong>{{ d.createdAt | date:'dd MMM yyyy' }}</strong>
+        </article>
+      </section>
+
+      <section class="info-grid">
+        <article class="info-card">
+          <h2>Sender Address</h2>
+          <p><strong>{{ d.senderAddress.name }}</strong></p>
+          <p>{{ d.senderAddress.phone }}</p>
+          <p>{{ d.senderAddress.street }}</p>
+          <p>{{ d.senderAddress.city }}, {{ d.senderAddress.state }} - {{ d.senderAddress.pincode }}</p>
+        </article>
+        <article class="info-card">
+          <h2>Receiver Address</h2>
+          <p><strong>{{ d.receiverAddress.name }}</strong></p>
+          <p>{{ d.receiverAddress.phone }}</p>
+          <p>{{ d.receiverAddress.street }}</p>
+          <p>{{ d.receiverAddress.city }}, {{ d.receiverAddress.state }} - {{ d.receiverAddress.pincode }}</p>
+        </article>
+        <article class="info-card">
+          <h2>Package</h2>
+          <p><strong>{{ d.packageDetails.description }}</strong></p>
+          <p>Weight: {{ d.packageDetails.weight }} kg</p>
+          <p>Size: {{ d.packageDetails.length }} × {{ d.packageDetails.breadth }} × {{ d.packageDetails.height }} cm</p>
+          <p>Pickup: {{ d.pickupDate | date:'dd MMM yyyy' }}</p>
+        </article>
+      </section>
+
+      <div class="content-row">
+        <section class="timeline-card">
+          <h2>Tracking Timeline</h2>
+          @if (timelineLoading()) {
+            <p class="muted">Loading tracking events...</p>
+          } @else if (timeline().length === 0) {
+            <div class="empty-state">No tracking events yet.</div>
+          } @else {
+            <div class="timeline">
+              @for (event of timeline(); track event.id) {
+                <article class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <div class="timeline-top">
+                      <span class="status-badge status-{{ event.status }}">{{ event.status }}</span>
+                      <time>{{ event.eventTime || event.createdAt | date:'dd MMM yyyy, hh:mm a' }}</time>
+                    </div>
+                    <p class="location">📍 {{ event.location }}</p>
+                    <p>{{ event.description || event.remarks || 'Status updated' }}</p>
+                  </div>
+                </article>
+              }
+            </div>
+          }
+        </section>
+
+        <div class="right-column">
+          <!-- Proof of Delivery Section -->
+          <section class="info-card">
+            <h2>Proof of Delivery</h2>
+            @if (proof()) {
+              <div class="proof-box">
+                <img [src]="proof()?.fileUrl" alt="Proof of Delivery" class="proof-img" />
+                <p><strong>Status:</strong> {{ proof()?.verificationStatus }}</p>
+                <p><small>{{ proof()?.remarks }}</small></p>
+              </div>
+            } @else if (d.status === 'DELIVERED') {
+              <p class="muted">Proof of delivery has not been uploaded yet.</p>
+            } @else {
+              <p class="muted">Delivery is not yet completed.</p>
+            }
+          </section>
+
+          <!-- Documents Section -->
+          <section class="info-card">
+            <h2>Documents</h2>
+            
+            <div class="upload-section">
+              <label class="btn-ghost">
+                Upload Document
+                <input type="file" (change)="uploadDocument($event)" style="display: none" />
+              </label>
+            </div>
+
+            @if (documents().length > 0) {
+              <ul class="document-list">
+                @for (doc of documents(); track doc.id) {
+                  <li>
+                    <span>📄 {{ doc.documentType }}</span>
+                    <a [href]="doc.fileUrl" target="_blank" class="btn-link">View</a>
+                  </li>
+                }
+              </ul>
+            } @else {
+              <p class="muted">No documents uploaded.</p>
+            }
+          </section>
+        </div>
+      </div>
+    }
+  </main>
+</div>
